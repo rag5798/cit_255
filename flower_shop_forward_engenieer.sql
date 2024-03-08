@@ -1,4 +1,4 @@
--- MySQL Workbench Forward Engineering
+-- MySQL Workbench Forward Engineering -- 
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -1799,10 +1799,46 @@ INSERT INTO state (state_abv)
             INSERT INTO customer (first_name, last_name, store_id, address_id)
             VALUES ('Crystal', 'Henson', 12, 75);
 
-
             INSERT INTO customer (first_name, last_name, store_id, address_id)
             VALUES ('Benjamin', 'Johnston', 27, 79);
 
 
             INSERT INTO customer (first_name, last_name, store_id, address_id)
             VALUES ('Jessica', 'Smith', 36, 18);
+      
+
+-- ------------------------------------------------ -- 
+--    Needs Inserts put in as of March 08 2024      --
+-- ------------------------------------------------- -- 
+SELECT * FROM delivery; -- still needs to insert
+SELECT * FROM discount; -- Still needs to insert
+SELECT * FROM inventory; -- Still need to insert 
+SELECT * FROM item_type; -- Still need to insert
+SELECT * FROM occation;-- Still needs insert
+SELECT * FROM order_line; -- Still needs insert 
+SELECT * FROM product; -- Still need to insert
+SELECT * FROM store_employee; -- Still need to insert 
+SELECT * FROM truck; -- Still need to insert
+
+
+
+
+-- --------------------------------------------------- --
+-- 		double check the table name is okay to use	   --
+-- --------------------------------------------------- --
+SELECT * FROM role;
+SELECT * FROM order; 
+
+-- -------------- --
+-- Tables work --
+-- -------------- --
+SELECT * FROM employee;
+
+
+-- -------------------
+-- Playing around --
+-- -------------- --
+
+
+
+
