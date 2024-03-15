@@ -342,7 +342,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `flower_shop`.`discount` ;
 
 CREATE TABLE IF NOT EXISTS `flower_shop`.`discount` (
-  `discount_id` INT NOT NULL,
+  `discount_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `discount` DECIMAL(2,2) NOT NULL,
   PRIMARY KEY (`discount_id`))
 ENGINE = InnoDB;
@@ -357,7 +357,7 @@ CREATE TABLE IF NOT EXISTS `flower_shop`.`customer_employee` (
   `customer_employee_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `customer_id` INT UNSIGNED NOT NULL,
   `employee_id` INT UNSIGNED NOT NULL,
-  `discount_id` INT NOT NULL,
+  `discount_id` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`customer_employee_id`),
   INDEX `fk_customer_employee_customer1_idx` (`customer_id` ASC) VISIBLE,
   INDEX `fk_customer_employee_employee1_idx` (`employee_id` ASC) VISIBLE,
@@ -383,6 +383,8 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
 
 
 
@@ -421,6 +423,11 @@ use flower_shop;
 -- Cayleigh's attempt at inserts —--
 -- —------------------------------
 SELECT * FROM discount;
+INSERT INTO discount (discount) VALUES (0.05);
+
+INSERT INTO discount (discount) VALUES (0.10);
+
+INSERT INTO discount (discount) VALUES (0.15);
 
 
 
@@ -474,6 +481,16 @@ INSERT INTO customer (first_name, last_name, store_id, address_id) VALUES ('Doug
 
 INSERT INTO customer (first_name, last_name, store_id, address_id) VALUES ('Cesar', 'Moyer', (SELECT store_id FROM store s LEFT OUTER JOIN address a ON a.address_id = s.address_id WHERE city = 'Rexburgh'),(SELECT address_id FROM address WHERE city = 'Rexburgh' and street_name = 'Big Boulevard'));
 
+INSERT INTO customer (first_name, last_name, store_id, address_id)
+VALUES ('Jason', 'Murray', (SELECT store_id FROM store WHERE address_id = (SELECT address_id FROM address WHERE city = 'Phoenix' and street_name = 'Default Boulevard')), (SELECT address_id FROM address WHERE city = 'Gonzalezchester' and street_name = 'Laura Prairie'));
+
+INSERT INTO customer (first_name, last_name, store_id, address_id)
+VALUES ('Alex', 'Jackson', (SELECT store_id FROM store WHERE address_id = (SELECT address_id FROM address WHERE city = 'Rexburgh' and street_name = 'Anonymous Avenue')), (SELECT address_id FROM address WHERE city = 'North Cole' and street_name = 'Angela Walk'));
+
+INSERT INTO customer (first_name, last_name, store_id, address_id)
+VALUES ('Heather', 'Washington', (SELECT store_id FROM store WHERE address_id = (SELECT address_id FROM address WHERE city = 'Pittsburgh' and street_name = 'Random Street')), (SELECT address_id FROM address WHERE city = 'Alexville' and street_name = 'Johnathan Junction'));
+
+
 
 
 
@@ -506,6 +523,16 @@ INSERT INTO store_employee (employee_id, store_id) VALUES ((SELECT employee_id F
 INSERT INTO store_employee (employee_id, store_id) VALUES ((SELECT employee_id FROM employee WHERE first_name = 'Alex' and last_name = 'Jackson' and role_id = (SELECT role_id FROM role WHERE role_name = 'Manager')), (SELECT store_id FROM store s INNER JOIN address a ON a.address_id = s.address_id INNER JOIN state st ON st.state_id = a.state_id WHERE state_abv = (SELECT state_abv FROM employee e INNER JOIN address a ON e.address_id = a.address_id INNER JOIN state st ON st.state_id = a.state_id WHERE e.first_name = 'Alex')));
 
 INSERT INTO store_employee (employee_id, store_id) VALUES ((SELECT employee_id FROM employee WHERE first_name = 'Jason' and last_name = 'Murray' and role_id = (SELECT role_id FROM role WHERE role_name = 'Floral Designer')), (SELECT store_id FROM store s INNER JOIN address a ON a.address_id = s.address_id INNER JOIN state st ON st.state_id = a.state_id WHERE state_abv = (SELECT state_abv FROM employee e INNER JOIN address a ON e.address_id = a.address_id INNER JOIN state st ON st.state_id = a.state_id WHERE e.first_name = 'Jason')));
+
+
+
+
+SELECT * FROM customer_employee;
+INSERT INTO customer_employee (customer_id, employee_id, discount_id) VALUES ((SELECT customer_id FROM customer WHERE first_name = 'Heather' and first_name IN (SELECT first_name FROM employee)), (SELECT employee_id FROM employee WHERE first_name = 'Heather' and last_name = 'Washington'), (SELECT discount_id FROM discount d CROSS JOIN employee e WHERE role_id = (SELECT role_id FROM role WHERE role_name = 'Cashier') and discount = 0.05));
+
+INSERT INTO customer_employee (customer_id, employee_id, discount_id) VALUES ((SELECT customer_id FROM customer WHERE first_name = 'Heather' and first_name IN (SELECT first_name FROM employee)), (SELECT employee_id FROM employee WHERE first_name = 'Heather' and last_name = 'Washington'), (SELECT discount_id FROM discount d CROSS JOIN employee e WHERE role_id = (SELECT role_id FROM role WHERE role_name = 'Manager') and discount = 0.10));
+
+INSERT INTO customer_employee (customer_id, employee_id, discount_id) VALUES ((SELECT customer_id FROM customer WHERE first_name = 'Heather' and first_name IN (SELECT first_name FROM employee)), (SELECT employee_id FROM employee WHERE first_name = 'Heather' and last_name = 'Washington'), (SELECT discount_id FROM discount d CROSS JOIN employee e WHERE role_id = (SELECT role_id FROM role WHERE role_name = 'Floral Designer') and discount = 0.15));
 
 
 
