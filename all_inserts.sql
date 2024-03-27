@@ -538,13 +538,13 @@ INSERT INTO store_employee (employee_id, store_id) VALUES ((SELECT employee_id F
 
 
 
-SELECT * FROM customer_employee;
+
 INSERT INTO customer_employee (customer_id, employee_id, discount_id) VALUES ((SELECT customer_id FROM customer WHERE first_name = 'Heather' and first_name IN (SELECT first_name FROM employee)), (SELECT employee_id FROM employee WHERE first_name = 'Heather' and last_name = 'Washington'), (SELECT discount_id FROM discount d CROSS JOIN employee e WHERE role_id = (SELECT role_id FROM role WHERE role_name = 'Cashier') and discount = 0.05));
 
-INSERT INTO customer_employee (customer_id, employee_id, discount_id) VALUES ((SELECT customer_id FROM customer WHERE first_name = 'Heather' and first_name IN (SELECT first_name FROM employee)), (SELECT employee_id FROM employee WHERE first_name = 'Heather' and last_name = 'Washington'), (SELECT discount_id FROM discount d CROSS JOIN employee e WHERE role_id = (SELECT role_id FROM role WHERE role_name = 'Manager') and discount = 0.10));
+INSERT INTO customer_employee (customer_id, employee_id, discount_id) VALUES ((SELECT customer_id FROM customer WHERE first_name = 'Alex' and first_name IN (SELECT first_name FROM employee)), (SELECT employee_id FROM employee WHERE first_name = 'Heather' and last_name = 'Washington'), (SELECT discount_id FROM discount d CROSS JOIN employee e WHERE role_id = (SELECT role_id FROM role WHERE role_name = 'Manager') and discount = 0.10));
 
-INSERT INTO customer_employee (customer_id, employee_id, discount_id) VALUES ((SELECT customer_id FROM customer WHERE first_name = 'Heather' and first_name IN (SELECT first_name FROM employee)), (SELECT employee_id FROM employee WHERE first_name = 'Heather' and last_name = 'Washington'), (SELECT discount_id FROM discount d CROSS JOIN employee e WHERE role_id = (SELECT role_id FROM role WHERE role_name = 'Floral Designer') and discount = 0.15));
-
+INSERT INTO customer_employee (customer_id, employee_id, discount_id) VALUES ((SELECT customer_id FROM customer WHERE first_name = 'Jason' and first_name IN (SELECT first_name FROM employee)), (SELECT employee_id FROM employee WHERE first_name = 'Heather' and last_name = 'Washington'), (SELECT discount_id FROM discount d CROSS JOIN employee e WHERE role_id = (SELECT role_id FROM role WHERE role_name = 'Floral Designer') and discount = 0.15));
+SELECT * FROM customer_employee;
 
 
 
