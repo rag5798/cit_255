@@ -441,7 +441,7 @@ INSERT INTO state VALUES (default, 'ID');
 
 INSERT INTO state VALUES (default, 'AZ');
 
-SELECT * FROM state;
+-- SELECT * FROM state;
 
 
 
@@ -466,7 +466,7 @@ INSERT INTO address VALUES (default, 2648, 'Laura Prairie', 'Gonzalezchester', (
 
 INSERT INTO address VALUES (default, 123, 'Main Street', 'Looneyville', (SELECT state_id FROM state WHERE state_abv = 'ID'), '84410');
 
-SELECT * FROM address;
+-- SELECT address_id, house_number, street_name, city, state_abv, zip_code FROM address a INNER JOIN state s ON s.state_id = a.state_id ORDER BY address_id;
 
 -- UPDATE STATEMENT FOR LAST ENTRY IN ADDRESS
 SET @id = (SELECT address_id FROM address WHERE city = 'Looneyville');
@@ -476,12 +476,12 @@ SET state_id = (SELECT state_id FROM state WHERE state_abv = 'AZ')
 , zip_code = '85001'
 WHERE address_id = @id;
 
-SELECT * FROM address;
+-- SELECT address_id, house_number, street_name, city, state_abv, zip_code FROM address a INNER JOIN state s ON s.state_id = a.state_id ORDER BY address_id;
 
 -- DELETE STATEMENT FOR LAST ENTRY IN ADDRESS
 DELETE FROM address WHERE address_id = @id;
 
-SELECT * FROM address;
+-- SELECT address_id, house_number, street_name, city, state_abv, zip_code FROM address a INNER JOIN state s ON s.state_id = a.state_id ORDER BY address_id;
 
 
 -- SELECT * FROM store;
@@ -491,7 +491,7 @@ INSERT INTO store VALUES (default, '800-192-7392', (SELECT address_id FROM addre
 
 INSERT INTO store VALUES (default, '724-890-9190', (SELECT address_id FROM address WHERE city = 'Pittsburgh' and street_name = 'Random Street'));
 
-SELECT * FROM store;
+-- SELECT * FROM store;
 
 
 -- SELECT * FROM customer;
@@ -511,7 +511,7 @@ VALUES ('Alex', 'Jackson', (SELECT store_id FROM store WHERE address_id = (SELEC
 INSERT INTO customer (first_name, last_name, store_id, address_id)
 VALUES ('Heather', 'Washington', (SELECT store_id FROM store WHERE address_id = (SELECT address_id FROM address WHERE city = 'Pittsburgh' and street_name = 'Random Street')), (SELECT address_id FROM address WHERE city = 'Alexville' and street_name = 'Johnathan Junction'));
 
-SELECT * FROM customer;
+-- SELECT * FROM customer;
 
 
 
@@ -522,22 +522,36 @@ INSERT INTO role (role_name) VALUES ('Manager');
 
 INSERT INTO role (role_name) VALUES ('Floral Designer');
 
-SELECT * FROM role;
+-- SELECT * FROM role;
 
 
 -- SELECT * FROM employee;
 INSERT INTO employee (first_name, last_name, role_id, start_date, end_date, address_id)
-VALUES ('Heather', 'Washington', (SELECT role_id FROM role WHERE role_name = 'Cashier'), '2022-06-10', '2022-09-23', (SELECT address_id FROM address WHERE city = 'Alexville' and street_name = 'Johnathan Junction'));
+VALUES ('Heather'
+, 'Washington'
+, (SELECT role_id FROM role WHERE role_name = 'Cashier')
+, '2022-06-10', '2022-09-23'
+, (SELECT address_id FROM address WHERE city = 'Alexville' and street_name = 'Johnathan Junction'));
 
 
 INSERT INTO employee (first_name, last_name, role_id, start_date, end_date, address_id)
-VALUES ('Alex', 'Jackson', (SELECT role_id FROM role WHERE role_name = 'Manager'), '2023-11-28', '2024-11-09', (SELECT address_id FROM address WHERE city = 'North Cole' and street_name = 'Angela Walk'));
+VALUES ('Alex'
+, 'Jackson'
+, (SELECT role_id FROM role WHERE role_name = 'Manager')
+, '2023-11-28'
+, '2024-11-09'
+, (SELECT address_id FROM address WHERE city = 'North Cole' and street_name = 'Angela Walk'));
 
 
 INSERT INTO employee (first_name, last_name, role_id, start_date, end_date, address_id)
-VALUES ('Jason', 'Murray', (SELECT role_id FROM role WHERE role_name = 'Floral Designer'), '2015-01-02', '2015-10-15', (SELECT address_id FROM address WHERE city = 'Gonzalezchester' and street_name = 'Laura Prairie'));
+VALUES ('Jason'
+, 'Murray'
+, (SELECT role_id FROM role WHERE role_name = 'Floral Designer')
+, '2015-01-02'
+, '2015-10-15'
+, (SELECT address_id FROM address WHERE city = 'Gonzalezchester' and street_name = 'Laura Prairie'));
 
-SELECT * FROM employee;
+SELECT employee_id, first_name, last_name, role_name, start_date, end_date, street_name, city FROM employee e INNER JOIN role r ON r.role_id = e.role_id INNER JOIN address a ON a.address_id = e.address_id;
 
 
 -- SELECT * FROM store_employee;
@@ -547,7 +561,7 @@ INSERT INTO store_employee (employee_id, store_id) VALUES ((SELECT employee_id F
 
 INSERT INTO store_employee (employee_id, store_id) VALUES ((SELECT employee_id FROM employee WHERE first_name = 'Jason' and last_name = 'Murray' and role_id = (SELECT role_id FROM role WHERE role_name = 'Floral Designer')), (SELECT store_id FROM store s INNER JOIN address a ON a.address_id = s.address_id INNER JOIN state st ON st.state_id = a.state_id WHERE state_abv = (SELECT state_abv FROM employee e INNER JOIN address a ON e.address_id = a.address_id INNER JOIN state st ON st.state_id = a.state_id WHERE e.first_name = 'Jason')));
 
-SELECT * FROM store_employee;
+-- SELECT * FROM store_employee;
 
 
 
@@ -558,7 +572,7 @@ INSERT INTO customer_employee (customer_id, employee_id, discount_id) VALUES ((S
 
 INSERT INTO customer_employee (customer_id, employee_id, discount_id) VALUES ((SELECT customer_id FROM customer WHERE first_name = 'Jason' and first_name IN (SELECT first_name FROM employee)), (SELECT employee_id FROM employee WHERE first_name = 'Heather' and last_name = 'Washington'), (SELECT discount_id FROM discount d CROSS JOIN employee e WHERE role_id = (SELECT role_id FROM role WHERE role_name = 'Floral Designer') and discount = 0.15));
 
-SELECT * FROM customer_employee;
+-- SELECT * FROM customer_employee;
 
 
 
@@ -569,7 +583,7 @@ INSERT INTO occation (occation_name) VALUES ('Valintine');
 
 INSERT INTO occation (occation_name) VALUES ('Anniversary');
 
-SELECT * FROM occation;
+-- SELECT * FROM occation;
 
 
 
@@ -580,7 +594,7 @@ INSERT INTO item_type (item_name) VALUES ('Ballon');
 
 INSERT INTO item_type (item_name) VALUES ('Valintine\'s Bouquet');
 
-SELECT * FROM item_type;
+-- SELECT * FROM item_type;
 
 
 
@@ -592,7 +606,7 @@ INSERT INTO product (name, price, occation_id, item_type_id) VALUES ('Roses', 3.
 
 INSERT INTO product (name, price, occation_id, item_type_id) VALUES ('Roses with Gypsophila', 19.99, (SELECT occation_id FROM occation WHERE occation_name = 'Anniversary'), (SELECT item_type_id FROM item_type WHERE item_name = 'Valintine\'s Bouquet'));
 
-SELECT * FROM product;
+-- SELECT * FROM product;
 
 
 
@@ -603,7 +617,7 @@ INSERT INTO inventory (store_id, product_id, quantity) VALUES ((SELECT store_id 
 
 INSERT INTO inventory (store_id, product_id, quantity) VALUES ((SELECT store_id FROM store s INNER JOIN address a ON a.address_id = s.store_id INNER JOIN state st ON st.state_id = a.state_id WHERE state_abv = 'AZ'), (SELECT product_id FROM product WHERE name = 'Roses with Gypsophila'), 3);
 
-SELECT * FROM inventory;
+-- SELECT * FROM inventory;
 
 
 
@@ -614,7 +628,7 @@ INSERT INTO flower_shop.order (store_id, employee_id, customer_id, date, total) 
 
 INSERT INTO flower_shop.order (store_id, employee_id, customer_id, date, total) VALUES ((SELECT store_id FROM store s INNER JOIN address a ON a.address_id = s.address_id WHERE city = 'Pittsburgh'), (SELECT employee_id FROM employee WHERE first_name = 'Jason' and last_name = 'Murray'), (SELECT customer_id FROM customer WHERE first_name = 'Cesar' and last_name = 'Moyer'), NOW(), 300.00);
 
-SELECT * FROM flower_shop.order;
+-- SELECT * FROM flower_shop.order;
 
 
 
@@ -625,7 +639,7 @@ INSERT INTO order_line (order_id, product_id) VALUES ((SELECT order_id FROM flow
 
 INSERT INTO order_line (order_id, product_id) VALUES ((SELECT order_id FROM flower_shop.order WHERE customer_id = (SELECT customer_id FROM customer WHERE first_name = 'Cesar' and last_name = 'Moyer')), (SELECT product_id FROM product WHERE name = 'Helium Ballon'));
 
-SELECT * FROM order_line;
+-- SELECT * FROM order_line;
 
 
 
@@ -637,7 +651,7 @@ INSERT INTO truck (license_plate, make, model) VALUES ('YGT-789', 'Quasar', 'Qua
 
 INSERT INTO truck (license_plate, make, model) VALUES ('KLM-456', 'Nebula', 'Nimbus X');
 
-SELECT * FROM truck;
+-- SELECT * FROM truck;
 
 
 
@@ -649,4 +663,4 @@ INSERT INTO delivery (order_id, truck_id) VALUES ((SELECT order_id FROM flower_s
 
 INSERT INTO delivery (order_id, truck_id) VALUES ((SELECT order_id FROM flower_shop.order WHERE customer_id = (SELECT customer_id FROM customer WHERE first_name = 'Cesar' and last_name = 'Moyer')), (SELECT truck_id FROM truck WHERE license_plate = 'KLM-456'));
 
-SELECT * FROM delivery;
+-- SELECT * FROM delivery;
